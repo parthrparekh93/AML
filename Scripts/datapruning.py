@@ -22,7 +22,7 @@ train_users_pruned = train_users[train_users.country_destination != "NDF"]
 # print train_users["age"].mean()
 
 #Labeling
-train_users_pruned['gender'] = train_users_pruned['gender'].map({'-unknown-': 0, 'MALE': 1, 'FEMALE' : 2})
+train_users_pruned['gender'] = train_users_pruned['gender'].map({'-unknown-': 0, 'MALE': 1, 'FEMALE' : 2, 'OTHER' : 3})
 train_users_pruned['signup_method'] = train_users_pruned['signup_method'].map({'basic': 0, 'google': 1, 'facebook' : 2})
 train_users_pruned['language'] = train_users_pruned['language'].map({'el' : 0, 'en' : 1, 'zh' : 2, 'is' : 3, 'it' : 4, 'cs' : 5, 'es' : 6, 'ru' : 7, 'nl' : 8, 'pt' : 9, 'no' : 10, 'tr' : 11, 'th' : 12, 'ca' : 13, 'pl' : 14, 'fr' : 15, 'de' : 16, 'da' : 17, 'fi' : 18, 'hu' : 19, 'ja' : 20, 'ko' : 21, 'sv' : 22})
 train_users_pruned['affiliate_channel'] = train_users_pruned['affiliate_channel'].map({'api' : 0, 'remarketing' : 1, 'direct' : 2, 'content' : 3, 'sem-non-brand' : 4, 'other' : 5, 'seo' : 6, 'sem-brand' : 7})
@@ -35,7 +35,7 @@ train_users_pruned['first_browser'] = train_users_pruned['first_browser'].map({'
 train_users_pruned['country_destination'] = train_users_pruned['country_destination'].map({'FR':0, 'NL':1, 'PT':2, 'CA':3, 'DE':4, 'IT':5, 'US':6, 'other':7, 'AU':8, 'GB':9, 'ES':10})
 
 
-test_users['gender'] = test_users['gender'].map({'-unknown-': 0, 'MALE': 1, 'FEMALE' : 2})
+test_users['gender'] = test_users['gender'].map({'-unknown-': 0, 'MALE': 1, 'FEMALE' : 2, 'OTHER' : 3})
 test_users['signup_method'] = test_users['signup_method'].map({'basic': 0, 'google': 1, 'facebook' : 2})
 test_users['language'] = test_users['language'].map({'el' : 0, 'en' : 1, 'zh' : 2, 'is' : 3, 'it' : 4, 'cs' : 5, 'es' : 6, 'ru' : 7, 'nl' : 8, 'pt' : 9, 'no' : 10, 'tr' : 11, 'th' : 12, 'ca' : 13, 'pl' : 14, 'fr' : 15, 'de' : 16, 'da' : 17, 'fi' : 18, 'hu' : 19, 'ja' : 20, 'ko' : 21, 'sv' : 22})
 test_users['affiliate_channel'] = test_users['affiliate_channel'].map({'api' : 0, 'remarketing' : 1, 'direct' : 2, 'content' : 3, 'sem-non-brand' : 4, 'other' : 5, 'seo' : 6, 'sem-brand' : 7})
@@ -108,14 +108,16 @@ train_users_pruned['bucket_age'] = new_age
 print train_users_pruned['bucket_age'].median()
 train_users_pruned['bucket_age'].fillna(train_users_pruned['bucket_age'].median(), inplace="True")
 train_users_pruned = train_users_pruned.drop('age', 1)
-print train_users_pruned[:50]
+#print train_users_pruned[:50]
 
 
 test_users['bucket_age'] = new_age_test
 print test_users['bucket_age'].median()
 test_users['bucket_age'].fillna(test_users['bucket_age'].median(), inplace="True")
 test_users = test_users.drop('age', 1)
-print test_users[:50]
+#print test_users[:50]
 
-train_users_pruned.to_csv('train_users_pruned.csv', sep='\t', encoding='utf-8')
-test_users.to_csv('test_users.csv', sep='\t', encoding='utf-8')
+#print pd.isnull(train_users_pruned).any(1).nonzero()[0]
+
+train_users_pruned.to_csv('train_users_pruned.csv', sep=',', encoding='utf-8')
+test_users.to_csv('test_users.csv', sep=',', encoding='utf-8')
