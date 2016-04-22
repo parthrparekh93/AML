@@ -17,6 +17,7 @@ def main():
 
 
     del train_users_raw['id']
+    user_id = test_users_raw['id']
     del test_users_raw['id']
 
     train_users_raw=train_users_raw.drop(train_users_raw.columns[[0]], axis=1)
@@ -40,6 +41,7 @@ def main():
     test_users_downsized = test_users_raw.ix[:,selected_col_ind]
     del test_users_downsized['month_booked']
     del test_users_downsized['date_booked']
+    test_users_downsized['id'] = user_id
     print test_users_downsized.columns.values
 
     train_users_downsized.to_csv('training_data_processed.csv', sep=',', encoding='utf-8')

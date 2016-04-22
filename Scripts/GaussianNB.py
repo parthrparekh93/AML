@@ -28,4 +28,9 @@ Xtest = test_users_raw
 clf = GaussianNB()
 clf.fit(X, Y)
 #print(clf.predict([0,1.0,2,7,6.0,7,16.0,7,1,3.0]))
-print(clf.predict_proba(Xtest))
+ranked_result_array = []
+result_array = clf.predict_proba(Xtest)
+for test_row in result_array:
+    ranked_result_array.append(test_row.argsort()[-5:][::-1])
+
+print ranked_result_array    
