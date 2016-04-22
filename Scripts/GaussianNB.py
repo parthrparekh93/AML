@@ -5,6 +5,8 @@ from sklearn.naive_bayes import GaussianNB
 train_users_raw = pd.read_csv('training_data_processed.csv',delimiter=',',encoding='utf-8')
 test_users_raw = pd.read_csv('testing_data_processed.csv',delimiter=',',encoding='utf-8')
 
+country_mapping = {0:'FR', 1:'NL', 2:'PT', 3:'CA', 4:'DE', 5:'IT', 6:'US', 7:'other', 8:'AU', 9:'GB', 10:'ES', 11:'NDF'}
+
 train_users_raw=train_users_raw.drop(train_users_raw.columns[[0]], axis=1)
 test_users_raw=test_users_raw.drop(test_users_raw.columns[[0]], axis=1)
 
@@ -44,14 +46,14 @@ for user in user_id:
 
 
 for test_row in result_array:
-    ranked_result_array.append(test_row.argsort()[-5:][::-1][0])
-    ranked_result_array.append(test_row.argsort()[-5:][::-1][1])
-    ranked_result_array.append(test_row.argsort()[-5:][::-1][2])
-    ranked_result_array.append(test_row.argsort()[-5:][::-1][3])
-    ranked_result_array.append(test_row.argsort()[-5:][::-1][4])
+    ranked_result_array.append(country_mapping[test_row.argsort()[-5:][::-1][0]])
+    ranked_result_array.append(country_mapping[test_row.argsort()[-5:][::-1][1]])
+    ranked_result_array.append(country_mapping[test_row.argsort()[-5:][::-1][2]])
+    ranked_result_array.append(country_mapping[test_row.argsort()[-5:][::-1][3]])
+    ranked_result_array.append(country_mapping[test_row.argsort()[-5:][::-1][4]])
 
 #print len(user_id_final)
 #print len(ranked_result_array)
 finalcsv = pd.DataFrame(np.column_stack((user_id_final, ranked_result_array)), columns=['id', 'country'])
-#finalcsv.to_csv('finalcsv.csv',index=False)
+finalcsv.to_csv('finalcsv.csv',index=False)
 print finalcsv[:28]
