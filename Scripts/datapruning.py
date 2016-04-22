@@ -8,13 +8,13 @@ import math
 sns.set_style("white", {'ytick.major.size': 10.0})
 sns.set_context("poster", font_scale=1.1)
 
-train_users = pd.read_csv('../Data/train_users_2.csv')
+train_users_pruned = pd.read_csv('../Data/train_users_2.csv')
 test_users = pd.read_csv('../Data/test_users.csv')
 #test = train_users[train_users.country_destination == "NDF"]
 #print test.shape
 
 #Data Pruning
-train_users_pruned = train_users[train_users.country_destination != "NDF"]
+#train_users_pruned = train_users[train_users.country_destination != "NDF"]
 # print train_users_pruned['age'].isnull().sum()
 #Average Age
 # print train_users.mean(age)
@@ -32,7 +32,7 @@ train_users_pruned['first_affiliate_tracked'].fillna(0, inplace = True)
 train_users_pruned['signup_app'] = train_users_pruned['signup_app'].map({'Web' : 0, 'Android' : 1, 'iOS' : 2, 'Moweb' : 3})
 train_users_pruned['first_device_type'] = train_users_pruned['first_device_type'].map({'Windows Desktop' : 0, 'iPad' : 1, 'Desktop (Other)' : 2, 'Android Tablet' : 3, 'Other/Unknown' : 4, 'SmartPhone (Other)' : 5, 'Mac Desktop' : 6, 'iPhone' : 7, 'Android Phone' : 8})
 train_users_pruned['first_browser'] = train_users_pruned['first_browser'].map({'CometBird':0, '-unknown-' :1, 'Chrome':2, 'Stainless':3, 'SeaMonkey':4, 'Maxthon':5, 'TheWorld Browser':6, 'wOSBrowser':7, 'Apple Mail':8, 'AOL Explorer':9, 'Android Browser':10, 'Yandex.Browser':11, 'Avant Browser':12, 'SiteKiosk':13, 'CoolNovo':14, 'RockMelt':15, 'Mobile Safari':16, 'Camino':17, 'Sogou Explorer':18, 'Safari':19, 'IE Mobile':20, 'Pale Moon':21, 'Silk':22, 'BlackBerry Browser':23, 'Kindle Browser':24, 'Opera Mini':25, 'SlimBrowser':26, 'Opera':27, 'Chrome Mobile':28, 'Palm Pre web browser':29, 'Iron':30, 'IE':31, 'IceWeasel':32, 'Firefox':33, 'Googlebot':34, 'Mozilla':35, 'NetNewsWire':36, 'TenFourFox':37, 'Chromium':38, 'Mobile Firefox':39})
-train_users_pruned['country_destination'] = train_users_pruned['country_destination'].map({'FR':0, 'NL':1, 'PT':2, 'CA':3, 'DE':4, 'IT':5, 'US':6, 'other':7, 'AU':8, 'GB':9, 'ES':10})
+train_users_pruned['country_destination'] = train_users_pruned['country_destination'].map({'FR':0, 'NL':1, 'PT':2, 'CA':3, 'DE':4, 'IT':5, 'US':6, 'other':7, 'AU':8, 'GB':9, 'ES':10, 'NDF':11})
 
 
 test_users['gender'] = test_users['gender'].map({'-unknown-': 0, 'MALE': 1, 'FEMALE' : 2, 'OTHER' : 3})
@@ -116,8 +116,11 @@ print test_users['bucket_age'].median()
 test_users['bucket_age'].fillna(test_users['bucket_age'].median(), inplace="True")
 test_users = test_users.drop('age', 1)
 #print test_users[:50]
+train_users_pruned['language'].fillna(train_users_pruned['language'].median(), inplace="True")
+train_users_pruned['first_browser'].fillna(train_users_pruned['first_browser'].median(), inplace="True")
+train_users_pruned['affiliate_provider'].fillna(train_users_pruned['affiliate_provider'].median(), inplace="True")
 
-#print pd.isnull(train_users_pruned).any(1).nonzero()[0]
+print train_users_pruned.isnull().sum()
 
 train_users_pruned.to_csv('train_users_pruned.csv', sep=',', encoding='utf-8')
 test_users.to_csv('test_users.csv', sep=',', encoding='utf-8')

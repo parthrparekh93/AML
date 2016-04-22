@@ -19,6 +19,8 @@ test_users_raw['first_browser'].fillna(test_users_raw['first_browser'].median(),
 Y = train_users_raw['country_destination']
 del train_users_raw['country_destination']
 X = train_users_raw
+user_id = test_users_raw['id']
+del test_users_raw['id']
 Xtest = test_users_raw
 
 #print Xtest.isnull().sum()
@@ -28,9 +30,28 @@ Xtest = test_users_raw
 clf = GaussianNB()
 clf.fit(X, Y)
 #print(clf.predict([0,1.0,2,7,6.0,7,16.0,7,1,3.0]))
+
 ranked_result_array = []
 result_array = clf.predict_proba(Xtest)
-for test_row in result_array:
-    ranked_result_array.append(test_row.argsort()[-5:][::-1])
 
-print ranked_result_array    
+user_id_final = []
+for user in user_id:
+    user_id_final.append(user)
+    user_id_final.append(user)
+    user_id_final.append(user)
+    user_id_final.append(user)
+    user_id_final.append(user)
+
+
+for test_row in result_array:
+    ranked_result_array.append(test_row.argsort()[-5:][::-1][0])
+    ranked_result_array.append(test_row.argsort()[-5:][::-1][1])
+    ranked_result_array.append(test_row.argsort()[-5:][::-1][2])
+    ranked_result_array.append(test_row.argsort()[-5:][::-1][3])
+    ranked_result_array.append(test_row.argsort()[-5:][::-1][4])
+
+#print len(user_id_final)
+#print len(ranked_result_array)
+finalcsv = pd.DataFrame(np.column_stack((user_id_final, ranked_result_array)), columns=['id', 'country'])
+#finalcsv.to_csv('finalcsv.csv',index=False)
+print finalcsv[:28]
