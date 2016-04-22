@@ -10,6 +10,7 @@ from xgboost.sklearn import XGBClassifier
 import pandas as pd
 import numpy as np
 
+
 def adaboost_algorithm(XTrain,YTrain,XTest):
     adb = AdaBoostClassifier(n_estimators=100)
     adb.fit(XTrain, YTrain)
@@ -47,17 +48,17 @@ def ensemble_methods(algorithm='xgboost'):
         print 'Training XGBoost Classifier...'
         prediction_labels = xgboost_algorithm(XTrain,YTrain,XTest)
     
-    ranked_results=np.array([[row.argsort()[-5:][::-1]] for row in prediction_labels])
+    country_mapping = {0:'FR', 1:'NL', 2:'PT', 3:'CA', 4:'DE', 5:'IT', 6:'US', 7:'other', 8:'AU', 9:'GB', 10:'ES', 11:'NDF'}
+    ranked_results=np.array([[country_mapping[x] for x in row.argsort()[-5:][::-1]] for row in prediction_labels])
     ranked_results_flattened = ranked_results.flatten()
-   
+    
     user_ids_repeat = list()
     for id in user_ids:
         for i in xrange(5):
             user_ids_repeat.append(id)
     
     submission_result = pd.DataFrame(np.column_stack((user_ids_repeat, ranked_results_flattened)), columns=['user_id', 'country'])
-    print submission_result[:3]
-    
+    submission_result.to_csv('../Results/'+algorithm+'Results.csv',index=False)    
     
     
 if __name__=='__main__':
