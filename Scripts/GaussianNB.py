@@ -55,5 +55,5 @@ for test_row in result_array:
 #print len(user_id_final)
 #print len(ranked_result_array)
 finalcsv = pd.DataFrame(np.column_stack((user_id_final, ranked_result_array)), columns=['id', 'country'])
-finalcsv.to_csv('finalcsv.csv',index=False)
+finalcsv.to_csv('../Results/NaiveBayesResults.csv',index=False)
 #print finalcsv[:28]

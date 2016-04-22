@@ -57,9 +57,9 @@ def ensemble_methods(algorithm='xgboost'):
         for i in xrange(5):
             user_ids_repeat.append(id)
     
-    submission_result = pd.DataFrame(np.column_stack((user_ids_repeat, ranked_results_flattened)), columns=['user_id', 'country'])
+    submission_result = pd.DataFrame(np.column_stack((user_ids_repeat, ranked_results_flattened)), columns=['id', 'country'])
     submission_result.to_csv('../Results/'+algorithm+'Results.csv',index=False)    
     
     
 if __name__=='__main__':
-    ensemble_methods(algorithm='xgboost')
+    ensemble_methods(algorithm='adaboost')
